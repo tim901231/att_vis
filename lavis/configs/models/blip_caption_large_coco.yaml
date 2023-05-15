@@ -7,8 +7,9 @@ model:
   arch: blip_caption
   load_finetuned: True
 
-  pretrained: "https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_large.pth"
-  finetuned: "https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_large_caption.pth"
+  # pretrained: "https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_large.pth"
+  finetuned: "./checkpoint_best.pth"
+  # finetuned: "https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_large_caption.pth"
 
   vit_type: "large"
   vit_grad_ckpt: True
@@ -20,7 +21,7 @@ model:
   med_config_path: "configs/models/med_large_config.json"
 
   # generation configs
-  prompt: "a picture of "
+  prompt: ""
 
 
 preprocess:

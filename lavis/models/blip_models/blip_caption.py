@@ -64,6 +64,7 @@ class BlipCaption(BlipBase):
             max_length=self.max_txt_len,
             return_tensors="pt",
         ).to(self.device)
+
         text.input_ids[:, 0] = self.tokenizer.bos_token_id
 
         # prepare targets for forwarding decoder
@@ -71,7 +72,6 @@ class BlipCaption(BlipBase):
             text.input_ids == self.tokenizer.pad_token_id, -100
         )
         decoder_targets[:, : self.prompt_length] = -100
-
         # forward decoder
         image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(
             self.device
@@ -178,7 +178,6 @@ class BlipCaption(BlipBase):
         # prepare inputs for decoder generation.
         encoder_out = self.forward_encoder(samples)
         image_embeds = torch.repeat_interleave(encoder_out, num_captions, 0)
-
         prompt = [self.prompt] * image_embeds.size(0)
         prompt = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         prompt.input_ids[:, 0] = self.tokenizer.bos_token_id
@@ -214,6 +213,7 @@ class BlipCaption(BlipBase):
         max_txt_len = cfg.get("max_txt_len", 40)
 
         model = cls(image_encoder, text_decoder, prompt=prompt, max_txt_len=max_txt_len)
+        print(cfg)
         model.load_checkpoint_from_config(cfg)
 
         return model
